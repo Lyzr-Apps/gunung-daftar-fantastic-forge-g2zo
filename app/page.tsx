@@ -206,7 +206,7 @@ function formatDate(dateStr: string): string {
   if (!dateStr) return '-'
   try {
     const d = new Date(dateStr)
-    return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
+    return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Asia/Jakarta' })
   } catch {
     return dateStr
   }
@@ -216,7 +216,7 @@ function formatDateTime(dateStr: string): string {
   if (!dateStr) return '-'
   try {
     const d = new Date(dateStr)
-    return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+    return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Jakarta' })
   } catch {
     return dateStr
   }
@@ -359,14 +359,11 @@ function AgentInfoPanel({ activeAgentId }: { activeAgentId: string | null }) {
 
 // ============ SECTION: DASHBOARD ============
 
-function DashboardSection({ visitors, setActivePage }: { visitors: Visitor[]; setActivePage: (p: string) => void }) {
-  const [now, setNow] = useState<Date | null>(null)
-  useEffect(() => { setNow(new Date()) }, [])
-
-  const todayStr = now ? now.toISOString().split('T')[0] : ''
-  const todayCount = visitors.filter((v) => v.registeredAt?.startsWith(todayStr)).length
+function DashboardSection({ visitors, setActivePage, mounted }: { visitors: Visitor[]; setActivePage: (p: string) => void; mounted: boolean }) {
+  const todayStr = mounted ? new Date().toISOString().split('T')[0] : ''
+  const todayCount = mounted ? visitors.filter((v) => v.registeredAt?.startsWith(todayStr)).length : 0
   const activeCount = visitors.filter((v) => v.status === 'aktif').length
-  const overdueCount = visitors.filter((v) => isOverdue(v)).length
+  const overdueCount = mounted ? visitors.filter((v) => isOverdue(v)).length : 0
   const recentVisitors = [...visitors].sort((a, b) => new Date(b.registeredAt).getTime() - new Date(a.registeredAt).getTime()).slice(0, 5)
 
   return (
@@ -438,8 +435,8 @@ function DashboardSection({ visitors, setActivePage }: { visitors: Visitor[]; se
                     <tr key={v.id} className="border-b border-border/50 last:border-0 hover:bg-muted/30 transition-colors">
                       <td className="py-3 px-2 font-medium">{v.nama}</td>
                       <td className="py-3 px-2 text-muted-foreground">{v.jalur}</td>
-                      <td className="py-3 px-2 text-muted-foreground">{formatDateTime(v.registeredAt)}</td>
-                      <td className="py-3 px-2"><StatusBadge status={v.status} overdue={isOverdue(v)} /></td>
+                      <td className="py-3 px-2 text-muted-foreground">{mounted ? formatDateTime(v.registeredAt) : '-'}</td>
+                      <td className="py-3 px-2"><StatusBadge status={v.status} overdue={mounted ? isOverdue(v) : false} /></td>
                     </tr>
                   ))}
                 </tbody>
@@ -720,7 +717,7 @@ function PendaftaranSection({ visitors, setVisitors, setActiveAgentId }: { visit
 
 // ============ SECTION: TRACKING ============
 
-function TrackingSection({ visitors, setVisitors, setActiveAgentId }: { visitors: Visitor[]; setVisitors: React.Dispatch<React.SetStateAction<Visitor[]>>; setActiveAgentId: (id: string | null) => void }) {
+function TrackingSection({ visitors, setVisitors, setActiveAgentId, mounted }: { visitors: Visitor[]; setVisitors: React.Dispatch<React.SetStateAction<Visitor[]>>; setActiveAgentId: (id: string | null) => void; mounted: boolean }) {
   const [filterJalur, setFilterJalur] = useState('semua')
   const [filterStatus, setFilterStatus] = useState('semua')
   const [loading, setLoading] = useState(false)
@@ -844,10 +841,10 @@ function TrackingSection({ visitors, setVisitors, setActiveAgentId }: { visitors
                     <tr key={v.id} className="border-b border-border/50 last:border-0 hover:bg-muted/30 transition-colors">
                       <td className="py-3 px-2 font-medium">{v.nama}</td>
                       <td className="py-3 px-2 text-muted-foreground">{v.jalur}</td>
-                      <td className="py-3 px-2 text-muted-foreground">{formatDate(v.tanggalNaik)}</td>
-                      <td className="py-3 px-2 text-muted-foreground">{formatDate(v.estimasiTurun)}</td>
+                      <td className="py-3 px-2 text-muted-foreground">{mounted ? formatDate(v.tanggalNaik) : v.tanggalNaik || '-'}</td>
+                      <td className="py-3 px-2 text-muted-foreground">{mounted ? formatDate(v.estimasiTurun) : v.estimasiTurun || '-'}</td>
                       <td className="py-3 px-2 text-muted-foreground text-center">{v.jumlahRombongan}</td>
-                      <td className="py-3 px-2"><StatusBadge status={v.status} overdue={isOverdue(v)} /></td>
+                      <td className="py-3 px-2"><StatusBadge status={v.status} overdue={mounted ? isOverdue(v) : false} /></td>
                       <td className="py-3 px-2">
                         {v.status === 'aktif' && (
                           <div className="flex gap-1">
@@ -1084,6 +1081,9 @@ export default function Page() {
   const [visitors, setVisitors] = useState<Visitor[]>(SEED_VISITORS)
   const [activeAgentId, setActiveAgentId] = useState<string | null>(null)
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => { setMounted(true) }, [])
 
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: FiHome },
@@ -1159,9 +1159,9 @@ export default function Page() {
           <main className="flex-1 min-w-0">
             <ScrollArea className="h-screen">
               <div className="p-4 md:p-6 lg:p-8 max-w-6xl mx-auto pb-20">
-                {activePage === 'dashboard' && <DashboardSection visitors={visitors} setActivePage={setActivePage} />}
+                {activePage === 'dashboard' && <DashboardSection visitors={visitors} setActivePage={setActivePage} mounted={mounted} />}
                 {activePage === 'pendaftaran' && <PendaftaranSection visitors={visitors} setVisitors={setVisitors} setActiveAgentId={setActiveAgentId} />}
-                {activePage === 'tracking' && <TrackingSection visitors={visitors} setVisitors={setVisitors} setActiveAgentId={setActiveAgentId} />}
+                {activePage === 'tracking' && <TrackingSection visitors={visitors} setVisitors={setVisitors} setActiveAgentId={setActiveAgentId} mounted={mounted} />}
                 {activePage === 'laporan' && <LaporanSection visitors={visitors} setActiveAgentId={setActiveAgentId} />}
               </div>
             </ScrollArea>
