@@ -1,0 +1,55 @@
+{
+  "nodes": [
+    {"id": "input_node", "type": "Input", "label": "User Input", "nodeCategory": "input"},
+    {"id": "registration_agent", "type": "Agent", "label": "Registration Assistant Agent", "nodeCategory": "agent"},
+    {"id": "safety_agent", "type": "Agent", "label": "Safety Tracking Agent", "nodeCategory": "agent"},
+    {"id": "report_agent", "type": "Agent", "label": "Report & Analytics Agent", "nodeCategory": "agent"},
+    {"id": "output_node", "type": "Output", "label": "Output", "nodeCategory": "end"}
+  ],
+  "edges": [
+    {"source": "input_node", "target": "registration_agent"},
+    {"source": "input_node", "target": "safety_agent"},
+    {"source": "input_node", "target": "report_agent"},
+    {"source": "registration_agent", "target": "output_node"},
+    {"source": "safety_agent", "target": "output_node"},
+    {"source": "report_agent", "target": "output_node"}
+  ],
+  "agents": [
+    {
+      "node_id": "registration_agent",
+      "agent_id": "699eb42b4105d187aa1a228a",
+      "name": "Registration Assistant Agent",
+      "description": "Memvalidasi data pendaftaran pengunjung, memberikan ringkasan pendaftaran lengkap, menyarankan informasi keselamatan berdasarkan jalur pendakian, kondisi cuaca, dan jumlah rombongan.",
+      "provider": "OpenAI",
+      "model": "gpt-4.1",
+      "temperature": 0.3,
+      "top_p": 1,
+      "agent_type": "json",
+      "capabilities": ["text"]
+    },
+    {
+      "node_id": "safety_agent",
+      "agent_id": "699eb42b2beeae4407b5679a",
+      "name": "Safety Tracking Agent",
+      "description": "Menganalisis daftar pengunjung aktif di gunung, mendeteksi pengunjung yang melewati batas waktu pendakian, memberikan rekomendasi tindakan keselamatan.",
+      "provider": "OpenAI",
+      "model": "gpt-4.1",
+      "temperature": 0.2,
+      "top_p": 1,
+      "agent_type": "json",
+      "capabilities": ["text"]
+    },
+    {
+      "node_id": "report_agent",
+      "agent_id": "699eb42b12ee8368eec5f8ee",
+      "name": "Report & Analytics Agent",
+      "description": "Menganalisis data kunjungan untuk menghasilkan ringkasan statistik, mengidentifikasi tren, dan memberikan rekomendasi operasional kepada petugas.",
+      "provider": "OpenAI",
+      "model": "gpt-4.1",
+      "temperature": 0.3,
+      "top_p": 1,
+      "agent_type": "json",
+      "capabilities": ["text"]
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "agents": {
+    "registration_agent": {
+      "agent_id": "699eb42b4105d187aa1a228a",
+      "name": "Registration Assistant Agent",
+      "status": "created",
+      "response_schema_file": "response_schemas/registration_assistant_agent_response.json"
+    },
+    "safety_agent": {
+      "agent_id": "699eb42b2beeae4407b5679a",
+      "name": "Safety Tracking Agent",
+      "status": "created",
+      "response_schema_file": "response_schemas/safety_tracking_agent_response.json"
+    },
+    "report_agent": {
+      "agent_id": "699eb42b12ee8368eec5f8ee",
+      "name": "Report & Analytics Agent",
+      "status": "created",
+      "response_schema_file": "response_schemas/report_analytics_agent_response.json"
+    }
+  },
+  "workflow_pattern": "multiple_independent",
+  "total_agents": 3,
+  "created_at": "2026-02-25"
+}

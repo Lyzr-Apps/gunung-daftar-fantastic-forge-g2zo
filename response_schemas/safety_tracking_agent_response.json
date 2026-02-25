@@ -1,0 +1,24 @@
+{
+  "agent_name": "Safety Tracking Agent",
+  "agent_id": "699eb42b2beeae4407b5679a",
+  "description": "Menganalisis daftar pengunjung aktif di gunung, mendeteksi pengunjung yang melewati batas waktu pendakian, memberikan rekomendasi tindakan keselamatan, dan membantu petugas memprioritaskan tindakan darurat berdasarkan data pengunjung.",
+  "agent_type": "json",
+  "accessor": "result",
+  "auto_generated": true,
+  "response_schema": {
+    "analysis_summary": "string",
+    "total_active": "string",
+    "overdue_count": "string",
+    "risk_assessment": "string",
+    "recommended_actions": "string",
+    "alert_level": "string"
+  },
+  "example_response": {
+    "analysis_summary": "Overall safety analysis summary in Bahasa Indonesia",
+    "total_active": "Total number of active visitors",
+    "overdue_count": "Number of overdue visitors",
+    "risk_assessment": "Detailed risk assessment for each visitor or group in Bahasa Indonesia",
+    "recommended_actions": "Prioritized list of recommended actions in Bahasa Indonesia",
+    "alert_level": "Overall alert level: NORMAL, WASPADA, or DARURAT"
+  }
+}

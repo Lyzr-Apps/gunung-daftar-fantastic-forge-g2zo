@@ -1,0 +1,26 @@
+{
+  "agent_name": "Report & Analytics Agent",
+  "agent_id": "699eb42b12ee8368eec5f8ee",
+  "description": "Menganalisis data kunjungan untuk menghasilkan ringkasan statistik (jumlah pengunjung per periode, jalur terpopuler, rata-rata durasi pendakian), mengidentifikasi tren, dan memberikan rekomendasi operasional kepada petugas.",
+  "agent_type": "json",
+  "accessor": "result",
+  "auto_generated": true,
+  "response_schema": {
+    "period_label": "string",
+    "total_visitors": "string",
+    "popular_trails": "string",
+    "average_duration": "string",
+    "trends": "string",
+    "comparison": "string",
+    "operational_recommendations": "string"
+  },
+  "example_response": {
+    "period_label": "The reporting period label",
+    "total_visitors": "Total number of visitors in the period",
+    "popular_trails": "Most popular trails with visitor counts",
+    "average_duration": "Average hiking duration",
+    "trends": "Identified trends in Bahasa Indonesia",
+    "comparison": "Comparison with previous period",
+    "operational_recommendations": "Operational recommendations in Bahasa Indonesia"
+  }
+}

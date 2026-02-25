@@ -1,0 +1,24 @@
+{
+  "agent_name": "Registration Assistant Agent",
+  "agent_id": "699eb42b4105d187aa1a228a",
+  "description": "Memvalidasi data pendaftaran pengunjung, memberikan ringkasan pendaftaran lengkap, menyarankan informasi keselamatan berdasarkan jalur pendakian, kondisi cuaca, dan jumlah rombongan. Memformat data pendaftaran secara terstruktur.",
+  "agent_type": "json",
+  "accessor": "result",
+  "auto_generated": true,
+  "response_schema": {
+    "validation_status": "string",
+    "validation_notes": "string",
+    "registration_summary": "string",
+    "safety_tips": "string",
+    "risk_level": "string",
+    "warnings": "string"
+  },
+  "example_response": {
+    "validation_status": "VALID or INVALID",
+    "validation_notes": "Notes about validation issues if any",
+    "registration_summary": "Formatted registration summary in Bahasa Indonesia",
+    "safety_tips": "Safety tips relevant to the trail and conditions in Bahasa Indonesia",
+    "risk_level": "LOW, MEDIUM, or HIGH",
+    "warnings": "Any warnings or concerns about this registration"
+  }
+}
